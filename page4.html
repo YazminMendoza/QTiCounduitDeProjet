@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L'Aventure au Zoo</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@700&display=swap');
+        
+        /* Définition des polices personnalisées */
+        @font-face {
+            font-family: 'Cute Dino';
+            src: url('Cute Dino.otf') format('opentype');
+            font-weight: normal;
+            font-style: normal;
+        }
+        
+        @font-face {
+            font-family: 'Banana Stick';
+            src: url('Banana Stick.otf') format('opentype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        /* Zones protégées contre les animations */
+        .no-animation-zone {
+            position: relative;
+            z-index: 2;
+            background-color: transparent;
+        }
+
+        /* Éléments animés */
+        .balloon, .animal, .banana, .icecream, .sound-wave {
+            z-index: 1;
+            pointer-events: none;
+        }
+        
+        body {
+            font-family: 'Baloo 2', cursive;
+            background-color: #87CEEB;
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(255,255,255,0.8) 0%, transparent 20%),
+                radial-gradient(circle at 80% 70%, rgba(255,255,255,0.8) 0%, transparent 20%);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .zoo-background {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            height: 150px;
+            background: linear-gradient(to right, 
+                #4CAF50 0%, #8BC34A 20%, #CDDC39 40%, #FFEB3B 60%, #FF9800 80%, #FF5722 100%);
+            z-index: -1;
+        }
+
+        .zoo-fence {
+            position: fixed;
+            bottom: 150px;
+            width: 100%;
+            height: 80px;
+            background-image: 
+                linear-gradient(90deg, #795548 10px, transparent 10px),
+                linear-gradient(90deg, #795548 10px, transparent 10px);
+            background-size: 40px 80px;
+            background-position: 0 0, 20px 40px;
+            z-index: -1;
+        }
+
+        .main-container {
+            display: flex;
+            align-items: flex-start;
+            gap: 100px;
+            max-width: 1200px;
+            margin: 20px;
+            position: relative;
+        }
+
+        /* Style du robot narrateur */
+        .narrator-container {
+            width: 300px;
+            transition: all 0.5s ease;
+            position: relative;
+            flex-shrink: 0;
+            margin-left: 50px;
+        }
+
+        .narrator-base {
+            width: 100%;
+            filter: drop-shadow(5px 5px 5px rgba(0,0,0,0.3));
+        }
+
+        .narrator-face {
+            position: absolute;
+            top: 52px;
+            left: 90px;
+            width: 42%;
+            height: auto;
+            transition: all 0.3s ease;
+        }
+
+        .narrator-large {
+            transform: scale(3) translateY(20px);
+            top: 250px;
+        }
+
+        /* Style des boutons */
+        #start-button {
+            padding: 15px 30px;
+            font-size: 28px;
+            cursor: pointer;
+            background: linear-gradient(45deg, #FF5722, #FF9800);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+            font-family: 'Cute Dino', cursive;
+            margin-top: 20px;
+        }
+
+        #start-button:hover {
+            background: linear-gradient(45deg, #FF9800, #FF5722);
+            transform: scale(1.05);
+        }
+
+        #home-button {
+            padding: 12px 25px;
+            font-size: 22px;
+            cursor: pointer;
+            background: linear-gradient(45deg, #9C27B0, #E91E63);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            font-family: 'Cute Dino', cursive;
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: none;
+        }
+
+        #home-button:hover {
+            transform: scale(1.05);
+        }
+
+        /* Style de la carte d'histoire */
+        .story-card {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 30px;
+            border-radius: 20px;
+            width: 500px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            border: 5px dashed #FF9800;
+            display: none;
+            position: relative;
+            margin-right: 50px;
+        }
+
+        .title {
+            color: #FF5722;
+            text-shadow: 3px 3px 0 #FFEB3B, 5px 5px 0 rgba(0,0,0,0.1);
+            font-size: 3.5rem;
+            margin: 20px 0;
+            animation: rainbow 5s infinite alternate;
+            text-align: center;
+            font-family: 'Cute Dino', cursive;
+        }
+
+        @keyframes rainbow {
+            0% { color: #FF5722; }
+            20% { color: #FF9800; }
+            40% { color: #FFEB3B; }
+            60% { color: #8BC34A; }
+            80% { color: #2196F3; }
+            100% { color: #9C27B0; }
+        }
+
+        #story-text {
+            font-size: 22px;
+            color: #333;
+            line-height: 1.6;
+            min-height: 150px;
+            text-align: center;
+            font-family: 'Banana Stick', cursive;
+        }
+
+        /* Style des boutons d'émotion */
+        .buttons {
+            display: none;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .emotion-btn {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: none;
+            font-size: 2.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: linear-gradient(45deg, #FFD166, #FFB347);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .emotion-btn:hover {
+            transform: scale(1.1) rotate(10deg);
+        }
+
+        /* Animations */
+        @keyframes shake {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            50% { transform: translateX(5px); }
+            75% { transform: translateX(-5px); }
+            100% { transform: translateX(0); }
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .shake {
+            animation: shake 0.5s ease;
+        }
+
+        .bounce {
+            animation: bounce 0.5s ease;
+        }
+
+        .float {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        /* Animaux du zoo */
+        .animal {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .lion {
+            background-image: url('https://cdn-icons-png.flaticon.com/512/616/616408.png');
+            top: 10%;
+            left: 5%;
+            animation-delay: 0s;
+        }
+
+        .elephant {
+            background-image: url('https://cdn-icons-png.flaticon.com/512/3069/3069172.png');
+            top: 20%;
+            right: 5%;
+            animation-delay: 1s;
+            width: 120px;
+            height: 120px;
+        }
+
+        .monkey {
+            background-image: url('https://cdn-icons-png.flaticon.com/512/2227/2227853.png');
+            bottom: 20%;
+            left: 10%;
+            animation-delay: 2s;
+        }
+
+        .giraffe {
+            background-image: url('https://cdn-icons-png.flaticon.com/512/3069/3069181.png');
+            bottom: 15%;
+            right: 10%;
+            animation-delay: 3s;
+            height: 150px;
+        }
+
+        .zookeeper {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background-image: url('https://cdn-icons-png.flaticon.com/512/4474/4474809.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            bottom: 180px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 0;
+            animation: moveKeeper 10s linear infinite;
+        }
+
+        @keyframes moveKeeper {
+            0%, 100% { transform: translateX(-50%) scaleX(1); }
+            25% { transform: translateX(-30%) scaleX(1); }
+            50% { transform: translateX(0%) scaleX(-1); }
+            75% { transform: translateX(-70%) scaleX(-1); }
+        }
+
+        /* Ballons */
+        .balloon {
+            position: absolute;
+            width: 60px;
+            height: 80px;
+            background: #FF5722;
+            border-radius: 50%;
+            animation: float 4s ease-in-out infinite;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            box-shadow: inset -5px -5px 10px rgba(0,0,0,0.2);
+        }
+
+        .balloon::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            width: 5px;
+            height: 20px;
+            background: #FF9800;
+            transform: translateX(-50%);
+        }
+
+        /* Confettis */
+        .confetti {
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            opacity: 0;
+            z-index: 10;
+        }
+
+        @keyframes confetti-fall {
+            0% { transform: translateY(-100px) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+        }
+
+        /* Animations d'émotions */
+        .emotion-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s;
+        }
+
+        .emotion-animation.show {
+            opacity: 1;
+        }
+
+        .emotion-animation img {
+            width: 200px;
+            animation: bounce 0.5s infinite alternate;
+        }
+
+        /* Nuages d'humeur */
+        .mood-cloud {
+            position: absolute;
+            width: 150px;
+            height: 100px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            z-index: 10;
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+
+        .happy-cloud {
+            background-image: url('https://cdn-icons-png.flaticon.com/512/414/414927.png');
+            top: 20%;
+            left: 30%;
+        }
+
+        .sad-cloud {
+            background-image: url('https://cdn-icons-png.flaticon.com/512/979/979585.png');
+            top: 25%;
+            left: 25%;
+        }
+
+        .scared-cloud {
+            background-image: url('https://cdn-icons-png.flaticon.com/512/979/979590.png');
+            top: 15%;
+            left: 35%;
+        }
+
+/* Pour faire semblant que le narrateur parle
+*/        
+        .mouth {
+            position: absolute;
+            top: 104px; 
+            left: 140px; 
+            width: 9%;
+            height: auto;
+            display: none;
+            z-index: 10;
+        }
+    </style>
+</head>
+<body>
+    <div class="zoo-background"></div>
+    <div class="zoo-fence"></div>
+    
+    <div class="animal lion"></div>
+    <div class="animal elephant"></div>
+    <div class="animal monkey"></div>
+    <div class="animal giraffe"></div>
+    <div class="zookeeper"></div>
+    
+    <!-- Nuages d'humeur -->
+    <div class="mood-cloud happy-cloud"></div>
+    <div class="mood-cloud sad-cloud"></div>
+    <div class="mood-cloud scared-cloud"></div>
+    
+    <button id="home-button">🏠 Accueil</button>
+    
+    <h1 class="title no-animation-zone">Où est le miel?</h1>
+    <button id="start-button" class="no-animation-zone">Commencer l'histoire</button>
+    
+    <div class="main-container no-animation-zone">
+        <div class="narrator-container" id="narrator-container">
+            <img id="narrator-mouth" class="mouth" src="bouche.jpg" alt="Bouche ouverte">
+            <img id="narrator-face" class="narrator-face no-animation-zone" src="neutreMM.jpg" alt="Visage du narrateur">
+            <img class="narrator-base no-animation-zone" src="corpOmbre.png" alt="Corps du narrateur">
+            
+        </div>
+
+        <div class="story-card no-animation-zone" id="story-card">
+            <div id="story-text" class="no-animation-zone"></div>
+            <div class="buttons no-animation-zone" id="buttons">
+                <button class="emotion-btn" onclick="checkEmotion('happy', this)">😀</button>
+                <button class="emotion-btn" onclick="checkEmotion('sad', this)">😢</button>
+                <button class="emotion-btn" onclick="checkEmotion('scared', this)">😨</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Animation de félicitations -->
+    <div class="emotion-animation" id="happy-animation">
+        <img src="https://cdn-icons-png.flaticon.com/512/2278/2278992.png" alt="Happy!">
+    </div>
+    <div class="emotion-animation" id="sad-animation">
+        <img src="https://cdn-icons-png.flaticon.com/512/979/979585.png" alt="Sad!" style="width: 150px;">
+    </div>
+    <div class="emotion-animation" id="scared-animation">
+        <img src="https://cdn-icons-png.flaticon.com/512/979/979590.png" alt="Scared!" style="width: 150px;">
+    </div>
+
+    <script>
+        const storyText = [
+            { 
+                text: "Leo was a lovely boy who loved routines. Every morning, he woke up at the same time, he brushed his teeth, put on his favorite blue shirt and ate his toast with honey. It made him feel happy!",
+                audio: "part1.mp3",
+                face: "happyMM.jpg", 
+                emotion: 'happy',
+                
+            },
+
+            { 
+                text: "One day, something changed. When Leo went to the kitchen, his mom said: 'We have no more honey. Would you like strawberry jam instead?' Leo felt worried. He liked honey, he always had honey",
+                audio: "part2.mp3",
+                face: "effrayeMM.jpg",
+                emotion: 'scared',
+                
+            },
+
+/*            { 
+                text: "Aujourd'hui, c'est une journée spéciale ! Nous visitons le zoo coloré où tous les animaux sont heureux...", 
+                emotion: 'happy',
+                animation: function() {
+                    createBalloons(5);
+                    document.querySelector('.lion').style.transform = 'scale(1.2)';
+                    showMood('happy');
+                }
+            },
+            { 
+                text: "Oh non ! Le petit singe a perdu son goûter. Il regarde tristement son panier vide...", 
+                emotion: 'sad',
+                animation: function() {
+                    document.querySelector('.monkey').style.animation = 'float 3s ease-in-out infinite';
+                    createBananas(3);
+                    showMood('sad');
+                }
+            },
+            { 
+                text: "Soudain, l'éléphant fait un énorme bruit de trompette ! Tout le monde sursaute de surprise !", 
+                emotion: 'scared',
+                animation: function() {
+                    document.querySelector('.elephant').style.animation = 'none';
+                    setTimeout(() => {
+                        document.querySelector('.elephant').style.animation = 'float 6s ease-in-out infinite';
+                    }, 100);
+                    createSoundWaves();
+                    showMood('scared');
+                }
+            },
+            { 
+                text: "Le gardien du zoo arrive avec des glaces pour tout le monde ! Quelle joie dans le zoo !", 
+                emotion: 'happy',
+                animation: function() {
+                    createConfetti(30);
+                    document.querySelector('.zookeeper').style.animationPlayState = 'paused';
+                    setTimeout(() => {
+                        document.querySelector('.zookeeper').style.animationPlayState = 'running';
+                    }, 2000);
+                    createIceCreams(3);
+                    showMood('happy');
+                }
+            }
+*/
+        ];
+
+        let currentStoryIndex = 0;
+        let storyHistory = [];
+        let audioElement = new Audio();
+        let mouthInterval;
+
+        // Créer des éléments de zoo au chargement
+        window.onload = function() {
+            createBalloons(3);
+        };
+
+        document.getElementById("start-button").addEventListener("click", function() {
+            this.style.display = "none";
+            document.getElementById("story-card").style.display = "block";
+            document.getElementById("home-button").style.display = "block";
+            storyHistory = [];
+            displayStory();
+        });
+
+        document.getElementById("home-button").addEventListener("click", function() {
+            goHome();
+        });
+
+        function displayStory() {
+            const storyElement = document.getElementById("story-text");
+            storyElement.textContent = "";
+            
+            if (currentStoryIndex < storyText.length) {
+                if (storyText[currentStoryIndex].animation) {
+                    storyText[currentStoryIndex].animation();
+                }
+// Inserer audio
+                playAudio(storyText[currentStoryIndex].audio); 
+                typeWriter(storyText[currentStoryIndex].text, storyElement, 0);
+            } else {
+                storyElement.textContent = "Fin de l'histoire!";
+                createConfetti(50);
+                document.getElementById("buttons").style.display = "none";
+                
+                setTimeout(() => {
+                    document.getElementById("start-button").style.display = "block";
+                    document.getElementById("start-button").textContent = "Recommencer";
+                    document.getElementById("story-card").style.display = "none";
+                    document.getElementById("home-button").style.display = "none";
+                    currentStoryIndex = 0;
+                }, 3000);
+            }
+        }
+
+        function playAudio(audioSrc) {
+            audioElement.src = audioSrc;
+            audioElement.play();
+// Pour bouger la bouche pendant l'audio            
+            mouthInterval = setInterval(toggleMouth, 80); 
+        }
+
+        function toggleMouth() {
+            const mouth = document.getElementById("narrator-mouth");
+            if (mouth.style.display === "none") {
+                mouth.style.display = "block";
+            } else {
+                mouth.style.display = "none";
+            }
+        }   
+
+        function typeWriter(text, element, i) {
+            if (i < text.length) {
+                element.textContent += text.charAt(i);
+                setTimeout(() => typeWriter(text, element, i + 1), 50);
+            } else {
+                document.getElementById("buttons").style.display = "flex";
+                document.getElementById("narrator-container").classList.add("narrator-large");
+                
+                // Animation des boutons d'émotion
+                const emotionButtons = document.querySelectorAll('.emotion-btn');
+                emotionButtons.forEach((btn, index) => {
+                    setTimeout(() => {
+                        btn.classList.add('bounce');
+                        setTimeout(() => btn.classList.remove('bounce'), 1000);
+                    }, index * 200);
+                });
+//Changer l'emotion dans le visage du narrateur                
+                document.getElementById("narrator-face").src = storyText[currentStoryIndex].face;
+// Fermer la bouche du narrateur
+                clearInterval(mouthInterval);
+                document.getElementById("narrator-mouth").style.display = "none";
+            }
+        }
+
+        function checkEmotion(selectedEmotion, button) {
+            const correctEmotion = storyText[currentStoryIndex].emotion;
+            
+            if (selectedEmotion === correctEmotion) {
+                // Bonne réponse
+                document.getElementById("narrator-face").src = "bonneMM.jpg";
+                button.classList.add('bounce');
+                
+                // Affiche l'animation correspondante à l'émotion
+                showEmotionAnimation(correctEmotion);
+                
+                // Ajoute à l'historique avant de passer à la suite
+                storyHistory.push(currentStoryIndex);
+                
+                setTimeout(() => {
+                    document.getElementById("narrator-face").src = "neutreMM.jpg";
+                    document.getElementById("buttons").style.display = "none";
+                    document.getElementById("narrator-container").classList.remove("narrator-large");
+                    currentStoryIndex++;
+                    displayStory();
+                }, 2000);
+            } else {
+                // Mauvaise réponse
+                button.classList.add("shake");
+                setTimeout(() => {
+                    button.classList.remove("shake");
+                }, 500);
+            }
+        }
+
+        function goHome() {
+            document.getElementById("story-card").style.display = "none";
+            document.getElementById("start-button").style.display = "block";
+            document.getElementById("start-button").textContent = "Commencer l'histoire";
+            document.getElementById("home-button").style.display = "none";
+            currentStoryIndex = 0;
+            storyHistory = [];
+        }
+
+        function showEmotionAnimation(emotion) {
+            const anim = document.getElementById(emotion + '-animation');
+            anim.classList.add('show');
+            setTimeout(() => {
+                anim.classList.remove('show');
+            }, 1500);
+        }
+
+        function showMood(mood) {
+            // Cache tous les nuages d'humeur
+            document.querySelectorAll('.mood-cloud').forEach(cloud => {
+                cloud.style.opacity = '0';
+            });
+            
+            // Affiche le nuage correspondant
+            document.querySelector('.' + mood + '-cloud').style.opacity = '1';
+            
+            // Cache le nuage après 3 secondes
+            setTimeout(() => {
+                document.querySelector('.' + mood + '-cloud').style.opacity = '0';
+            }, 3000);
+        }
+
+        function getSafePosition(protectedZones) {
+            const maxAttempts = 100;
+            let attempts = 0;
+            let left, top;
+            let positionOk = false;
+            
+            while (!positionOk && attempts < maxAttempts) {
+                attempts++;
+                left = Math.random() * 80 + 10; // 10-90%
+                top = Math.random() * 70 + 10; // 10-80%
+                
+                positionOk = true;
+                for (const zone of protectedZones) {
+                    if (
+                        left < (zone.right / window.innerWidth * 100 + 10) && 
+                        (left + 10) > (zone.left / window.innerWidth * 100) && 
+                        top < (zone.bottom / window.innerHeight * 100 + 10) && 
+                        (top + 10) > (zone.top / window.innerHeight * 100)
+                    ) {
+                        positionOk = false;
+                        break;
+                    }
+                }
+            }
+            
+            return { left, top };
+        }
+
+        function createBalloons(count) {
+            document.querySelectorAll('.balloon').forEach(b => b.remove());
+            
+            const colors = ['#FF5722', '#FFEB3B', '#4CAF50', '#2196F3', '#9C27B0'];
+            const emojis = ['🎈', '🎉', '🐘', '🦁', '🐵', '🦒'];
+            
+            // Obtenir les zones protégées
+            const protectedZones = Array.from(document.querySelectorAll('.no-animation-zone'))
+                .map(el => el.getBoundingClientRect());
+            
+            for (let i = 0; i < count; i++) {
+                const balloon = document.createElement('div');
+                balloon.className = 'balloon';
+                
+                // Position sécurisée
+                const { left, top } = getSafePosition(protectedZones);
+                
+                balloon.style.left = left + '%';
+                balloon.style.top = top + '%';
+                balloon.style.background = colors[Math.floor(Math.random() * colors.length)];
+                balloon.style.animationDelay = i * 0.5 + 's';
+                balloon.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+                document.body.appendChild(balloon);
+            }
+        }
+
+        function createBananas(count) {
+            document.querySelectorAll('.banana').forEach(b => b.remove());
+            
+            // Obtenir les zones protégées
+            const protectedZones = Array.from(document.querySelectorAll('.no-animation-zone'))
+                .map(el => el.getBoundingClientRect());
+            
+            for (let i = 0; i < count; i++) {
+                const banana = document.createElement('div');
+                banana.className = 'banana';
+                
+                // Position sécurisée
+                const { left, top } = getSafePosition(protectedZones);
+                
+                banana.style.position = 'absolute';
+                banana.style.width = '40px';
+                banana.style.height = '40px';
+                banana.style.backgroundImage = 'url("https://cdn-icons-png.flaticon.com/512/2909/2909761.png")';
+                banana.style.backgroundSize = 'contain';
+                banana.style.backgroundRepeat = 'no-repeat';
+                banana.style.left = left + '%';
+                banana.style.top = top + '%';
+                banana.style.animation = 'float 3s ease-in-out infinite';
+                banana.style.animationDelay = i * 0.3 + 's';
+                document.body.appendChild(banana);
+                
+                setTimeout(() => {
+                    banana.style.transition = 'all 1s';
+                    banana.style.transform = 'translateY(100px) rotate(180deg)';
+                    banana.style.opacity = '0';
+                    setTimeout(() => banana.remove(), 1000);
+                }, 3000 + i * 500);
+            }
+        }
+
+        function createIceCreams(count) {
+            document.querySelectorAll('.icecream').forEach(b => b.remove());
+            
+            // Obtenir les zones protégées
+            const protectedZones = Array.from(document.querySelectorAll('.no-animation-zone'))
+                .map(el => el.getBoundingClientRect());
+            
+            for (let i = 0; i < count; i++) {
+                const icecream = document.createElement('div');
+                icecream.className = 'icecream';
+                
+                // Position sécurisée
+                const { left, top } = getSafePosition(protectedZones);
+                
+                icecream.style.position = 'absolute';
+                icecream.style.width = '50px';
+                icecream.style.height = '50px';
+                icecream.style.backgroundImage = 'url("https://cdn-icons-png.flaticon.com/512/3081/3081987.png")';
+                icecream.style.backgroundSize = 'contain';
+                icecream.style.backgroundRepeat = 'no-repeat';
+                icecream.style.left = left + '%';
+                icecream.style.top = top + '%';
+                icecream.style.animation = 'float 4s ease-in-out infinite';
+                icecream.style.animationDelay = i * 0.3 + 's';
+                document.body.appendChild(icecream);
+            }
+        }
+
+        function createSoundWaves() {
+            document.querySelectorAll('.sound-wave').forEach(b => b.remove());
+            
+            for (let i = 0; i < 5; i++) {
+                const wave = document.createElement('div');
+                wave.className = 'sound-wave';
+                wave.style.position = 'absolute';
+                wave.style.width = '100px';
+                wave.style.height = '100px';
+                wave.style.border = '5px solid #FF9800';
+                wave.style.borderRadius = '50%';
+                wave.style.left = '15%';
+                wave.style.top = '20%';
+                wave.style.opacity = '0';
+                wave.style.animation = 'sound-wave 1s ease-out ' + (i * 0.2) + 's';
+                document.body.appendChild(wave);
+                
+                setTimeout(() => wave.remove(), 1000 + i * 200);
+            }
+        }
+
+        function createConfetti(count) {
+            const colors = ['#FF5722', '#FFEB3B', '#4CAF50', '#2196F3', '#9C27B0'];
+            
+            for (let i = 0; i < count; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.top = '-20px';
+                confetti.style.animation = 'confetti-fall ' + (Math.random() * 2 + 1) + 's linear forwards';
+                confetti.style.animationDelay = i * 0.1 + 's';
+                document.body.appendChild(confetti);
+                
+                setTimeout(() => confetti.remove(), 2000 + i * 100);
+            }
+        }
+    </script>
+</body>
+</html>
