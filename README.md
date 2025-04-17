@@ -1,5 +1,5 @@
 Apprends les Émotions avec QT !
-Bienvenue sur le dépôt GitHub de notre projet, une application interactive conçue pour aider les enfants de 3 à 4 ans à reconnaître les émotions à travers une histoire animée.
+Bienvenue sur le dépôt GitHub de notre projet, une application interactive conçue pour aider les enfants de 3 à 4 ans à reconnaître les émotions à travers d'une histoire animée et interactive.
 Ce guide vous expliquera pas à pas comment accéder à notre projet, l’ouvrir et l’utiliser, même si vous n’avez jamais utilisé GitHub ni manipulé ce type de fichier auparavant.
 
 📥 Étapes détaillées pour installer le projet
@@ -22,7 +22,7 @@ Vous verrez un fichier nommé quelque chose comme QTConduiteDeProjet.zip.
 
 Faites un clic droit sur ce fichier, puis sélectionnez “Extraire tout…” ou “Décompresser”.
 
-Une fenêtre s’ouvre : cliquez sur “Extraire” pour créer un nouveau dossier contenant les fichiers du projet.
+Une fenêtre s’ouvre: cliquez sur “Extraire” pour créer un nouveau dossier contenant les fichiers du projet.
 
 Attendez quelques secondes, un nouveau dossier non compressé va apparaître.
 
@@ -50,7 +50,7 @@ Cela lancera le storytelling interactif.
 2. Interagir avec l’histoire
 L’histoire est divisée en plusieurs petites scènes.
 
-Après avoir lu ou écouté chaque scène, il faut choisir quelle est l’émotion ressentie ?
+Après avoir lu ou écouté chaque scène, il faut choisir quelle est l’émotion ressentie.
 
 Plusieurs boutons représentant des émoticônes (visages) s’affichent, chacun représentant une émotion (joie, tristesse, peur…).
 
@@ -61,7 +61,7 @@ Si vous avez choisi la bonne émotion, vous passez à la scène suivante.
 3. Suivre et contrôler votre progression
 Vous pouvez voir où vous en êtes dans l’histoire grâce à une barre de progression.
 
-Vous avez aussi la possibilité de :
+Vous avez aussi la possibilité de:
 
 Cliquer sur un bouton "Retour" pour revenir à la scène précédente,
 
@@ -69,7 +69,7 @@ Cliquer sur un bouton "Suivant" pour avancer dans l’histoire (si vous avez bie
 
 
 ✅ Conseils
-Il n’est pas nécessaire d’installer de logiciel : tout se fait dans votre navigateur.
+Il n’est pas nécessaire d’installer de logiciel: tout se fait dans votre navigateur.
 
 Assurez-vous simplement d’avoir un navigateur Internet à jour (Google Chrome est recommandé pour de meilleures performances).
 
