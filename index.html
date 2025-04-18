@@ -1,0 +1,1476 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L'Aventure du Loup et du Hibou</title>
+    <link rel="icon" type="image/png" href="logo1.png">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@700&family=Bubblegum+Sans&display=swap');
+        
+        /* Définition des polices personnalisées */
+        @font-face {
+            font-family: 'Cute Dino';
+            src: url('Cute Dino.otf') format('opentype');
+            font-weight: normal;
+            font-style: normal;
+        }
+        
+        @font-face {
+            font-family: 'Banana Stick';
+            src: url('Banana Stick.otf') format('opentype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        /* Zones protégées contre les animations */
+        .no-animation-zone {
+            position: relative;
+            z-index: 2;
+            background-color: transparent;
+        }
+
+        /* Éléments animés */
+        .sound-wave {
+            z-index: 1;
+            pointer-events: none;
+        }
+        
+        body {
+            font-family: 'Bubblegum Sans', cursive;
+            background: linear-gradient(180deg, #87CEEB 0%, #B0E0E6 100%);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #333;
+        }
+
+        /* Soleil */
+        .sun {
+            position: fixed;
+            top: 50px;
+            right: 80px;
+            width: 120px;
+            height: 120px;
+            background: radial-gradient(circle, #FFD700 30%, #FFA500 100%);
+            border-radius: 50%;
+            box-shadow: 0 0 50px #FFD700;
+            z-index: -1;
+            animation: pulse-sun 5s infinite alternate;
+        }
+
+        @keyframes pulse-sun {
+            0% { transform: scale(1); box-shadow: 0 0 50px #FFD700; }
+            100% { transform: scale(1.1); box-shadow: 0 0 70px #FFD700; }
+        }
+
+        /* Nuages */
+        .cloud {
+            position: fixed;
+            background: white;
+            border-radius: 50%;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+            z-index: -1;
+            opacity: 0.9;
+            animation: float-cloud 30s linear infinite;
+        }
+
+        .cloud::before, .cloud::after {
+            content: '';
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+        }
+
+        .cloud-1 {
+            top: 100px;
+            left: -150px;
+            width: 100px;
+            height: 60px;
+            animation-duration: 60s;
+        }
+
+        .cloud-1::before {
+            width: 60px;
+            height: 60px;
+            top: -30px;
+            left: 15px;
+        }
+
+        .cloud-1::after {
+            width: 80px;
+            height: 80px;
+            top: -20px;
+            right: 15px;
+        }
+
+        .cloud-2 {
+            top: 200px;
+            left: -250px;
+            width: 120px;
+            height: 70px;
+            animation-duration: 75s;
+            animation-delay: 10s;
+        }
+
+        .cloud-2::before {
+            width: 70px;
+            height: 70px;
+            top: -30px;
+            left: 20px;
+        }
+
+        .cloud-2::after {
+            width: 90px;
+            height: 90px;
+            top: -25px;
+            right: 20px;
+        }
+
+        .cloud-3 {
+            top: 150px;
+            left: -200px;
+            width: 150px;
+            height: 80px;
+            animation-duration: 90s;
+            animation-delay: 20s;
+        }
+
+        .cloud-3::before {
+            width: 80px;
+            height: 80px;
+            top: -40px;
+            left: 25px;
+        }
+
+        .cloud-3::after {
+            width: 100px;
+            height: 100px;
+            top: -30px;
+            right: 25px;
+        }
+
+        @keyframes float-cloud {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(calc(100vw + 300px)); }
+        }
+
+        /* Arc-en-ciel */
+        .rainbow {
+            position: fixed;
+            bottom: 0;
+            left: 10%;
+            width: 80%;
+            height: 300px;
+            border-radius: 300px 300px 0 0;
+            background: linear-gradient(
+                180deg,
+                rgba(255, 0, 0, 0.2) 0%,
+                rgba(255, 165, 0, 0.2) 16.6%,
+                rgba(255, 255, 0, 0.2) 33.3%,
+                rgba(0, 128, 0, 0.2) 50%,
+                rgba(0, 0, 255, 0.2) 66.6%,
+                rgba(75, 0, 130, 0.2) 83.3%,
+                rgba(238, 130, 238, 0.2) 100%
+            );
+            z-index: -1;
+            opacity: 0.5;
+            transform: scale(2);
+        }
+
+        /* Papillons */
+        .butterfly {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            z-index: 1;
+            animation: butterfly-fly 20s linear infinite;
+        }
+
+        @keyframes butterfly-fly {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(100px, -50px) rotate(10deg); }
+            50% { transform: translate(200px, 0) rotate(0deg); }
+            75% { transform: translate(100px, 50px) rotate(-10deg); }
+            100% { transform: translate(0, 0) rotate(0deg); }
+        }
+
+        /* Oiseaux */
+        .bird {
+            position: absolute;
+            width: 40px;
+            height: 20px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            z-index: 1;
+            animation: bird-fly 30s linear infinite;
+        }
+
+        @keyframes bird-fly {
+            0% { transform: translateX(-100px); }
+            100% { transform: translateX(calc(100vw + 100px)); }
+        }
+
+        /* Herbe */
+        .grass {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            height: 100px;
+            background: linear-gradient(to top, #4CAF50, #8BC34A);
+            z-index: -1;
+        }
+
+        /* Fleurs */
+        .flower {
+            position: absolute;
+            bottom: 100px;
+            width: 30px;
+            height: 60px;
+            z-index: 0;
+        }
+
+        .flower-stem {
+            position: absolute;
+            bottom: 0;
+            left: 15px;
+            width: 5px;
+            height: 40px;
+            background-color: #4CAF50;
+        }
+
+        .flower-head {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+        }
+
+        .main-container {
+            display: flex;
+            align-items: flex-start;
+            gap: 100px;
+            max-width: 1200px;
+            margin: 20px;
+            position: relative;
+        }
+
+        /* Style du robot narrateur */
+        .narrator-container {
+            width: 300px;
+            transition: all 0.5s ease;
+            position: relative;
+            flex-shrink: 0;
+            margin-left: 50px;
+            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.2));
+        }
+
+        .narrator-base {
+            width: 100%;
+            filter: drop-shadow(5px 5px 5px rgba(0,0,0,0.3));
+        }
+
+        .narrator-face {
+            position: absolute;
+            top: 52px;
+            left: 90px;
+            width: 42%;
+            height: auto;
+            transition: all 0.3s ease;
+        }
+
+        .narrator-large {
+            transform: scale(3) translateY(20px);
+            top: 250px;
+        }
+
+        /* Style des boutons */
+        .btn {
+            padding: 15px 30px;
+            font-size: 24px;
+            cursor: pointer;
+            background: linear-gradient(45deg, #4FC3F7, #03A9F4);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+            font-family: 'Bubblegum Sans', cursive;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 25px rgba(0,0,0,0.3);
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        .btn::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: rgba(255,255,255,0.1);
+            transform: rotate(45deg);
+            transition: all 0.3s ease;
+            opacity: 0;
+        }
+
+        .btn:hover::after {
+            opacity: 1;
+            transform: rotate(45deg) translateY(-50%);
+        }
+
+        #start-button {
+            margin-top: 20px;
+            font-size: 28px;
+            background: linear-gradient(45deg, #4FC3F7, #03A9F4);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(3, 169, 244, 0.7); }
+            70% { box-shadow: 0 0 0 15px rgba(3, 169, 244, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(3, 169, 244, 0); }
+        }
+
+        /* Boutons de navigation fixe */
+        .fixed-nav {
+            position: fixed;
+            top: 20px;
+            z-index: 1000;
+            display: flex;
+            gap: 15px;
+        }
+
+        .right-nav {
+            right: 20px;
+        }
+
+        .nav-icon-btn {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #4FC3F7, #03A9F4);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            border: none;
+        }
+
+        .nav-icon-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        }
+
+        .nav-icon-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* Navigation buttons */
+        .nav-buttons {
+            display: none;
+            justify-content: space-between;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .nav-btn {
+            padding: 12px 25px;
+            font-size: 18px;
+            cursor: pointer;
+            background: linear-gradient(45deg, #4FC3F7, #03A9F4);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            font-family: 'Bubblegum Sans', cursive;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .nav-btn:disabled {
+            background: #BDBDBD;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Progress bar */
+        .progress-container {
+            width: 100%;
+            height: 12px;
+            background-color: rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            margin-top: 15px;
+            overflow: hidden;
+            display: none;
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(to right, #4FC3F7, #03A9F4, #0288D1);
+            width: 0%;
+            transition: width 0.5s ease;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(3, 169, 244, 0.7);
+        }
+
+        /* Style de la carte d'histoire */
+        .story-card {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 30px;
+            border-radius: 20px;
+            width: 500px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            border: 5px solid #03A9F4;
+            display: none;
+            position: relative;
+            margin-right: 50px;
+            overflow: hidden;
+        }
+
+        .story-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0) 50%);
+            pointer-events: none;
+        }
+
+        .title {
+            color: #0288D1;
+            text-shadow: 3px 3px 0 #B3E5FC, 5px 5px 0 rgba(0,0,0,0.1);
+            font-size: 3.5rem;
+            margin: 20px 0;
+            animation: colorChange 5s infinite alternate;
+            text-align: center;
+            font-family: 'Bubblegum Sans', cursive;
+            position: relative;
+            letter-spacing: 2px;
+        }
+
+        .title::before, .title::after {
+            content: "🐺";
+            position: absolute;
+            font-size: 2.5rem;
+            top: 50%;
+            transform: translateY(-50%);
+            animation: bounce 2s infinite alternate;
+        }
+
+        .title::before {
+            left: -60px;
+        }
+
+        .title::after {
+            right: -60px;
+            content: "🦉";
+        }
+
+        .decorative-emojis {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .emoji {
+            position: absolute;
+            font-size: 30px;
+            opacity: 0.7;
+            animation: float 3s ease-in-out infinite;
+            filter: drop-shadow(0 3px 5px rgba(0,0,0,0.2));
+        }
+
+        /* Animation en vague pour les émojis */
+        @keyframes wave-animation {
+            0% { transform: translateY(50px); opacity: 0; }
+            20% { transform: translateY(-10px); opacity: 1; }
+            40% { transform: translateY(0); opacity: 1; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+
+        .wave-emoji {
+            animation: wave-animation 1s forwards;
+        }
+
+        @keyframes colorChange {
+            0% { color: #0288D1; }
+            25% { color: #039BE5; }
+            50% { color: #03A9F4; }
+            75% { color: #29B6F6; }
+            100% { color: #4FC3F7; }
+        }
+
+        #story-text {
+            font-size: 22px;
+            color: #333;
+            line-height: 1.6;
+            min-height: 150px;
+            text-align: center;
+            font-family: 'Banana Stick', cursive;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Style des boutons d'émotion */
+        .buttons {
+            display: none;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .emotion-btn {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: none;
+            font-size: 2.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: linear-gradient(45deg, #4FC3F7, #03A9F4);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .emotion-btn:hover {
+            transform: scale(1.1) rotate(10deg);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        }
+
+        .emotion-btn:active {
+            transform: scale(0.95);
+        }
+
+        .emotion-btn::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: rgba(255,255,255,0.1);
+            transform: rotate(45deg);
+            transition: all 0.3s ease;
+            opacity: 0;
+        }
+
+        .emotion-btn:hover::after {
+            opacity: 1;
+            transform: rotate(45deg) translateY(-50%);
+        }
+
+        /* Sound control */
+        .control-panel {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            z-index: 1000;
+            display: flex;
+            gap: 15px;
+        }
+
+        .control-btn {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #4FC3F7, #03A9F4);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            border: none;
+        }
+
+        .control-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        }
+
+        /* Animations */
+        @keyframes shake {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            50% { transform: translateX(5px); }
+            75% { transform: translateX(-5px); }
+            100% { transform: translateX(0); }
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(-50%); }
+            50% { transform: translateY(-70%); }
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-15px) rotate(5deg); }
+            100% { transform: translateY(0px) rotate(0deg); }
+        }
+
+        .shake {
+            animation: shake 0.5s ease;
+        }
+
+        .bounce {
+            animation: bounce 0.5s ease;
+        }
+
+        .float {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        /* Confettis */
+        .confetti {
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            opacity: 0;
+            z-index: 10;
+        }
+
+        @keyframes confetti-fall {
+            0% { transform: translateY(-100px) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+        }
+
+        /* Animations d'émotions */
+        .emotion-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s;
+        }
+
+        .emotion-animation.show {
+            opacity: 1;
+        }
+
+        .emotion-animation img {
+            width: 250px;
+            animation: bounce 0.5s infinite alternate;
+            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.4));
+        }
+
+        /* Nuages d'humeur */
+        .mood-cloud {
+            position: absolute;
+            width: 180px;
+            height: 120px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            z-index: 10;
+            opacity: 0;
+            transition: opacity 0.5s;
+            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.3));
+        }
+
+        .happy-cloud {
+            background-image: url('https://cdn-icons-png.flaticon.com/512/414/414927.png');
+            top: 20%;
+            left: 30%;
+        }
+
+        .sad-cloud {
+            background-image: url('https://cdn-icons-png.flaticon.com/512/979/979585.png');
+            top: 25%;
+            left: 25%;
+        }
+
+        .scared-cloud {
+            background-image: url('https://cdn-icons-png.flaticon.com/512/979/979590.png');
+            top: 15%;
+            left: 35%;
+        }
+
+        /* Pour faire semblant que le narrateur parle */
+        .mouth {
+            position: absolute;
+            top: 104px; 
+            left: 140px; 
+            width: 9%;
+            height: auto;
+            display: none;
+            z-index: 10;
+        }
+
+        /* Mode nuit */
+        .night-mode {
+            background: linear-gradient(180deg, #1A237E 0%, #283593 100%);
+        }
+
+        .night-mode .story-card {
+            background: rgba(38, 50, 56, 0.9);
+            border-color: #7E57C2;
+        }
+
+        .night-mode #story-text {
+            color: #E0F7FA;
+        }
+
+        .night-mode .title {
+            color: #B3E5FC;
+            text-shadow: 3px 3px 0 #0288D1, 5px 5px 0 rgba(0,0,0,0.3);
+        }
+
+        .night-mode .sun {
+            background: radial-gradient(circle, #E1F5FE 30%, #B3E5FC 100%);
+            box-shadow: 0 0 50px #E1F5FE;
+        }
+
+        .night-mode .grass {
+            background: linear-gradient(to top, #1B5E20, #2E7D32);
+        }
+
+        /* Particules flottantes */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .particle {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            animation: float-up 15s linear infinite;
+        }
+
+        @keyframes float-up {
+            0% { transform: translateY(100vh) translateX(0); opacity: 0; }
+            10% { opacity: 0.7; }
+            90% { opacity: 0.7; }
+            100% { transform: translateY(-100px) translateX(50px); opacity: 0; }
+        }
+
+        /* Effet de brillance */
+        .glow {
+            box-shadow: 0 0 20px rgba(3, 169, 244, 0.7);
+        }
+    </style>
+</head>
+<body>
+    <!-- Éléments de décor -->
+    <div class="sun"></div>
+    <div class="cloud cloud-1"></div>
+    <div class="cloud cloud-2"></div>
+    <div class="cloud cloud-3"></div>
+    <div class="rainbow"></div>
+    <div class="grass"></div>
+    <div class="particles" id="particles"></div>
+    
+    <!-- Nuages d'humeur -->
+    <div class="mood-cloud happy-cloud"></div>
+    <div class="mood-cloud sad-cloud"></div>
+    <div class="mood-cloud scared-cloud"></div>
+    
+    <!-- Boutons de navigation fixe - Seul le bouton home reste -->
+    <div class="fixed-nav right-nav">
+        <button id="home-button" class="nav-icon-btn">🏠</button>
+    </div>
+    
+    <!-- Panneau de contrôle -->
+    <div class="control-panel">
+        <button id="sound-control" class="control-btn">🔊</button>
+        <button id="night-mode-toggle" class="control-btn">☀️</button>
+    </div>
+    
+    <div class="decorative-emojis" id="decorative-emojis"></div>
+    
+    <h1 class="title no-animation-zone" id="main-title">Bienvenue aux mondes d'histoires</h1>
+    <button id="start-button" class="btn no-animation-zone">Commencer l'histoire</button>
+    
+    <div class="main-container no-animation-zone">
+        <div class="narrator-container" id="narrator-container">
+            <img id="narrator-mouth" class="mouth" src="bouche.jpg" alt="Bouche ouverte">
+            <img id="narrator-face" class="narrator-face no-animation-zone" src="calmeMM.jpg" alt="Visage du narrateur">
+            <img class="narrator-base no-animation-zone" src="corpOmbre.png" alt="Corps du narrateur">
+        </div>
+
+        <div class="story-card no-animation-zone" id="story-card">
+            <div id="story-text" class="no-animation-zone"></div>
+            
+            <div class="progress-container" id="progress-container">
+                <div class="progress-bar" id="progress-bar"></div>
+            </div>
+            
+            <div class="nav-buttons" id="nav-buttons">
+                <button class="nav-btn" id="prev-btn" disabled><span>⬅️</span> <span>Précédent</span></button>
+                <button class="nav-btn" id="next-btn"><span>Suivant</span> <span>➡️</span></button>
+            </div>
+            
+            <div class="buttons no-animation-zone" id="buttons">
+                <button class="emotion-btn" onclick="checkEmotion('heureux', this)">😊</button>
+                <button class="emotion-btn" onclick="checkEmotion('effraye', this)">😨</button>
+                <button class="emotion-btn" onclick="checkEmotion('en_colere', this)">😡</button>
+                <button class="emotion-btn" onclick="checkEmotion('calme', this)">🙂</button>
+                <button class="emotion-btn" onclick="checkEmotion('sceptique', this)">🤨</button>
+                <button class="emotion-btn" onclick="checkEmotion('excite', this)">🤪</button>
+                <button class="emotion-btn" onclick="checkEmotion('desole', this)">😳</button>
+                <button class="emotion-btn" onclick="checkEmotion('triste', this)">😢</button>
+                <button class="emotion-btn" onclick="checkEmotion('fache', this)">😠</button>
+                <button class="emotion-btn" onclick="checkEmotion('joyeux', this)">😀</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Animation de félicitations -->
+    <div class="emotion-animation" id="heureux-animation">
+        <img src="https://cdn-icons-png.flaticon.com/512/2278/2278992.png" alt="Bien fait!">
+    </div>
+    <div class="emotion-animation" id="effraye-animation">
+        <img src="https://cdn-icons-png.flaticon.com/512/2278/2278992.png" alt="Bien fait!">
+    </div>
+    <div class="emotion-animation" id="en_colere-animation">
+        <img src="https://cdn-icons-png.flaticon.com/512/2278/2278992.png" alt="Bien fait!">
+    </div>
+    <div class="emotion-animation" id="calme-animation">
+        <img src="https://cdn-icons-png.flaticon.com/512/2278/2278992.png" alt="Bien fait!">
+    </div>
+    <div class="emotion-animation" id="sceptique-animation">
+        <img src="https://cdn-icons-png.flaticon.com/512/2278/2278992.png" alt="Bien fait!">
+    </div>
+    <div class="emotion-animation" id="excite-animation">
+        <img src="https://cdn-icons-png.flaticon.com/512/2278/2278992.png" alt="Bien fait!">
+    </div>
+    <div class="emotion-animation" id="desole-animation">
+        <img src="https://cdn-icons-png.flaticon.com/512/2278/2278992.png" alt="Bien fait!">
+    </div>
+    <div class="emotion-animation" id="triste-animation">
+        <img src="https://cdn-icons-png.flaticon.com/512/2278/2278992.png" alt="Bien fait!">
+    </div>
+    <div class="emotion-animation" id="fache-animation">
+        <img src="https://cdn-icons-png.flaticon.com/512/2278/2278992.png" alt="Bien fait!">
+    </div>
+    <div class="emotion-animation" id="joyeux-animation">
+        <img src="https://cdn-icons-png.flaticon.com/512/2278/2278992.png" alt="Bien fait!">
+    </div>
+
+    <script>
+        // Définition des textes de l'histoire
+        const storyText = [
+            { 
+                text: "Il était une fois un loup qui vivait dans une belle forêt, entouré de tous ses amis. Il s'appelait Loup.",
+                audio: "1.mp3",
+                face: "heureuxMM.jpg", 
+                emotion: 'heureux',
+                
+            },
+
+            { 
+                text: "Mais ce loup avait un souci: il était trop émotif. Joyeux, fâché, triste, excité… il changeait d'humeur à cent à l'heure!",
+                audio: "2.mp3",
+                face: "sceptiqueMM.jpg",
+                emotion: 'sceptique',
+                
+            },
+
+            { 
+                text: "Ainsi, quand Loup était d'humeur joyeuse, il sifflotait, le cœur léger, faisait des blagues, parlait aux arbres… Il était plein d'énergie et débordait d'idées pour s'amuser!",
+                audio: "3.mp3",
+                face: "joyeuxMM.jpg",
+                emotion: 'joyeux',
+                
+            },
+
+            { 
+                text: "Cependant, si quelque chose le contrariait… Ah! Il se renfrognait, explosait, et envoyait tout le monde balader!",
+                audio: "4.mp3",
+                face: "facheMM.jpg",
+                emotion: 'fache',
+                
+            },
+
+            { 
+                text: "— Tu dois apprendre à te calmer, Loup, lui dit un jour Maître Hibou, excédé. Tu nous donnes le tournis!",
+                audio: "5.mp3",
+                face: "facheMM.jpg",
+                emotion: 'fache',
+                
+            },
+
+            { 
+                text: "— Apprendre à me calmer? Mais pourquoi? demanda Loup.",
+                audio: "6.mp3",
+                face: "sceptiqueMM.jpg",
+                emotion: 'sceptique',
+                
+            },
+
+            { 
+                text: "— Pour être plus serein! Mais ne t'inquiète pas, nous allons t'aider… On commence demain!",
+                audio: "7.mp3",
+                face: "heureuxMM.jpg",
+                emotion: 'heureux',
+                
+            },
+
+            { 
+                text: "Le lendemain, Loup se rendit chez son ami. — Pour contrôler tes émotions, le yoga, c'est parfait! déclara Maître Hibou. Respire calmement et fais le vide en toi.",
+                audio: "8.mp3",
+                face: "calmeMM.jpg",
+                emotion: 'calme',
+                
+            },
+
+            { 
+                text: "Maître Hibou enchaîna les positions: lotus, montagne… et Loup essaya de l'imiter. Ouh là là! Ce n'était pas facile, mais qu'est-ce que c'était rigolo! N'y tenant plus, Loup éclata de rire.",
+                audio: "9.mp3",
+                face: "joyeuxMM.jpg",
+                emotion: 'joyeux',
+                
+            },
+
+            { 
+                text: "— On dirait que le yoga ne fonctionne pas avec toi, soupira Maître Hibou.",
+                audio: "10.mp3",
+                face: "desoleMM.jpg",
+                emotion: 'desole',
+                
+            },
+
+            { 
+                text: "À l'extérieur, Alfred attendait Loup de pied ferme. — Rien de tel que le sport pour se défouler, dit-il. Je t'ai préparé un parcours spécial 'Loup excité'. Prêt?",
+                audio: "11.mp3",
+                face: "heureuxMM.jpg",
+                emotion: 'heureux',
+                
+            },
+
+            { 
+                text: "Et il fila comme une fusée. Derrière lui, Loup courait, sautait, rampait… Alfred s'arrêta au pied d'un arbre immense. — On se retrouve en haut! cria-t-il en disparaissant dans les feuillages.",
+                audio: "12.mp3",
+                face: "exciteMM.jpg",
+                emotion: 'excite',
+                
+            },
+
+            { 
+                text: "Arrivé au sommet, Loup regarda en bas… Sa gorge se serra, son cœur se mit à cogner dans sa poitrine, ses jambes à trembler. — Alfred, j'ai peur! paniqua-t-il. Je vais tomber!",
+                audio: "13.mp3",
+                face: "effrayeMM.jpg",
+                emotion: 'effraye',
+                
+            },
+
+            { 
+                text: "— Calme-toi, Loup, je suis avec toi. On va redescendre ensemble, doucement. Loup prit une grande inspiration et, tout tremblant, il redescendit.",
+                audio: "14.mp3",
+                face: "desoleMM.jpg",
+                emotion: 'desole',
+                
+            },
+
+            { 
+                text: "— Tu as vaincu ta peur, tu peux être fier de toi!, le félicita Alfred. Loup sourit: ah ça oui, il était fier de lui!",
+                audio: "15.mp3",
+                face: "joyeuxMM.jpg",
+                emotion: 'joyeux',
+                
+            },
+
+            { 
+                text: "Tout ceci m'a mis en appétit, se dit Loup. Cela tombait bien: Gros Louis l'attendait chez lui.",
+                audio: "16.mp3",
+                face: "heureuxMM.jpg",
+                emotion: 'heureux',
+                
+            },
+
+            { 
+                text: "Les pattes pleines de farine, Gros Louis était avec Louve dans la cuisine. — Ils ont l'air de bien s'amuser tous les deux…, pensa Loup, jaloux.",
+                audio: "17.mp3",
+                face: "tristeMM.jpg",
+                emotion: 'triste',
+                
+            },
+
+            { 
+                text: "— Salut Loup! fit Gros Louis. Aujourd'hui, on prépare des macarons. Pour réussir ces gâteaux, il faut être très, très patient. Tiens, c'est un bon exercice pour toi, n'est-ce pas?- À ces mots, Louve éclata de rire.",
+                audio: "18.mp3",
+                face: "joyeuxMM.jpg",
+                emotion: 'joyeux',
+                
+            },
+
+            { 
+                text: "Loup sentit la moutarde lui monter au nez. Il devint tout rouge, tapa du pied et explosa: — C'est ça, moquez-vous de moi!?, hurla-t-il, très en colère. Je m'en fiche! De toute façon, je n'ai pas envie de faire des gâteaux idiots avec des idiots!",
+                audio: "19.mp3",
+                face: "en_colereMM.jpg",
+                emotion: 'en_colere',
+                
+            },
+
+            { 
+                text: "Loup s'en alla, grommelant dans sa barbe et donnant des coups de patte dans les arbres.",
+                audio: "20.mp3",
+                face: "facheMM.jpg",
+                emotion: 'fache',
+                
+            },
+
+            { 
+                text: "Peu à peu, Loup ralentit son allure, pour finir par se traîner comme un escargot, le cœur lourd. Une larme roula sur sa joue. — Je n'aurais pas dû m'énerver, renifla-t-il. Louve ne m'aimera plus jamais… Comme je suis triste…",
+                audio: "21.mp3",
+                face: "tristeMM.jpg",
+                emotion: 'triste',
+                
+            },
+
+            { 
+                text: "— Mais, qu'est-ce qui arrive à mon super copain?, fit alors une voix derrière lui.- C'était Demoiselle Yéti.",
+                audio: "22.mp3",
+                face: "joyeuxMM.jpg",
+                emotion: 'joyeux',
+                
+            },
+
+            { 
+                text: "Elle lui fit un gros câlin, puis elle dit: — Ce qui est fait est fait. Maintenant, il faut réparer ta bêtise! Va voir Gros Louis et Louve, et excuse-toi. Tu te sentiras beaucoup mieux après.",
+                audio: "23.mp3",
+                face: "joyeuxMM.jpg",
+                emotion: 'joyeux',
+                
+            },
+
+            { 
+                text: "— Et si Louve ne veut pas me pardonner? fit Loup, inquiet.",
+                audio: "24.mp3",
+                face: "effrayeMM.jpg",
+                emotion: 'effraye',
+                
+            },
+
+            { 
+                text: "— Qui ne tente rien n'a rien, répondit Demoiselle Yéti. Allez, file!",
+                audio: "25.mp3",
+                face: "joyeuxMM.jpg",
+                emotion: 'joyeux',
+                
+            },
+
+            { 
+                text: "Tout honteux, Loup retourna frapper à la porte de Gros Louis. — Je vous demande pardon, les amis, fit-il. Je ne pensais pas ce que j'ai dit. Ce n'était pas gentil.",
+                audio: "26.mp3",
+                face: "desoleMM.jpg",
+                emotion: 'desole',
+                
+            },
+
+            { 
+                text: "— Excuses acceptées, sourit Louve. Loup et Louve se regardèrent, des cœurs plein les yeux. Loup leva ses pattes: il se sentait léger, léger, léger! Et… il était affamé!",
+                audio: "27.mp3",
+                face: "joyeuxMM.jpg",
+                emotion: 'joyeux',
+                
+            },
+
+            { 
+                text: "À table, mes amis, les macarons sont prêts!",
+                audio: "28.mp3",
+                face: "joyeuxMM.jpg",
+                emotion: 'joyeux',
+                
+            },
+        ];
+
+        let currentStoryIndex = 0;
+        let storyHistory = [];
+        let audioElement = new Audio();
+        let mouthInterval;
+        let soundEnabled = true;
+        let isNightMode = false;
+
+        // Créer des éléments de décor au chargement
+        window.onload = function() {
+            createDecorativeEmojis();
+            createParticles();
+            createFlowers();
+            createButterflies();
+            createBirds();
+            updateProgressBar();
+        };
+
+        document.getElementById("start-button").addEventListener("click", function() {
+            this.style.display = "none";
+            document.getElementById("story-card").style.display = "block";
+            document.getElementById("nav-buttons").style.display = "flex";
+            document.getElementById("progress-container").style.display = "block";
+            storyHistory = [];
+            displayStory();
+        });
+
+        document.getElementById("home-button").addEventListener("click", function() {
+            goHome();
+        });
+
+        document.getElementById("prev-btn").addEventListener("click", function() {
+            if (currentStoryIndex > 0) {
+                currentStoryIndex--;
+                displayStory();
+                updateNavButtons();
+                updateProgressBar();
+            }
+        });
+
+        document.getElementById("next-btn").addEventListener("click", function() {
+            if (currentStoryIndex < storyText.length - 1) {
+                currentStoryIndex++;
+                displayStory();
+                updateNavButtons();
+                updateProgressBar();
+            }
+        });
+
+        document.getElementById("sound-control").addEventListener("click", function() {
+            soundEnabled = !soundEnabled;
+            this.textContent = soundEnabled ? "🔊" : "🔇";
+            
+            if (!soundEnabled) {
+                audioElement.pause();
+                clearInterval(mouthInterval);
+                document.getElementById("narrator-mouth").style.display = "none";
+            } else if (currentStoryIndex < storyText.length) {
+                playAudio(storyText[currentStoryIndex].audio);
+            }
+        });
+
+        document.getElementById("night-mode-toggle").addEventListener("click", function() {
+            isNightMode = !isNightMode;
+            this.textContent = isNightMode ? "🌙" : "☀️";
+            document.body.classList.toggle("night-mode");
+        });
+
+        function displayStory() {
+            const storyElement = document.getElementById("story-text");
+            storyElement.textContent = "";
+            
+            if (currentStoryIndex < storyText.length) {
+                if (storyText[currentStoryIndex].animation) {
+                    storyText[currentStoryIndex].animation();
+                }
+                // Inserer audio
+                if (soundEnabled) {
+                    playAudio(storyText[currentStoryIndex].audio); 
+                }
+                typeWriter(storyText[currentStoryIndex].text, storyElement, 0);
+            } else {
+                storyElement.textContent = "Fin de l'histoire!";
+                createConfetti(50);
+                document.getElementById("buttons").style.display = "none";
+                
+                setTimeout(() => {
+                    document.getElementById("start-button").style.display = "block";
+                    document.getElementById("start-button").textContent = "Recommencer";
+                    document.getElementById("story-card").style.display = "none";
+                    document.getElementById("nav-buttons").style.display = "none";
+                    document.getElementById("progress-container").style.display = "none";
+                    currentStoryIndex = 0;
+                }, 3000);
+            }
+        }
+
+        function playAudio(audioSrc) {
+            audioElement.src = audioSrc;
+            audioElement.play().catch(error => {
+                console.log("Erreur de lecture audio:", error);
+            });
+            // Pour bouger la bouche pendant l'audio            
+            clearInterval(mouthInterval);
+            mouthInterval = setInterval(toggleMouth, 80); 
+            
+            // Arrêter l'animation de la bouche quand l'audio est terminé
+            audioElement.onended = function() {
+                clearInterval(mouthInterval);
+                document.getElementById("narrator-mouth").style.display = "none";
+            };
+        }
+
+        function toggleMouth() {
+            const mouth = document.getElementById("narrator-mouth");
+            if (mouth.style.display === "none") {
+                mouth.style.display = "block";
+            } else {
+                mouth.style.display = "none";
+            }
+        }   
+
+        function typeWriter(text, element, i) {
+            if (i < text.length) {
+                element.textContent += text.charAt(i);
+                setTimeout(() => typeWriter(text, element, i + 1), 50);
+            } else {
+                document.getElementById("buttons").style.display = "flex";
+                document.getElementById("narrator-container").classList.add("narrator-large");
+                
+                // Animation des boutons d'émotion
+                const emotionButtons = document.querySelectorAll('.emotion-btn');
+                emotionButtons.forEach((btn, index) => {
+                    setTimeout(() => {
+                        btn.classList.add('bounce');
+                        setTimeout(() => btn.classList.remove('bounce'), 1000);
+                    }, index * 200);
+                });
+                //Changer l'emotion dans le visage du narrateur                
+                document.getElementById("narrator-face").src = storyText[currentStoryIndex].face;
+                // Fermer la bouche du narrateur
+                clearInterval(mouthInterval);
+                document.getElementById("narrator-mouth").style.display = "none";
+            }
+        }
+
+        function checkEmotion(selectedEmotion, button) {
+            const correctEmotion = storyText[currentStoryIndex].emotion;
+            
+            if (selectedEmotion === correctEmotion) {
+                // Bonne réponse
+                document.getElementById("narrator-face").src = "bonneMM.jpg";
+                button.classList.add('bounce');
+                
+                // Affiche l'animation correspondante à l'émotion
+                showEmotionAnimation(correctEmotion);
+                
+                // Ajoute à l'historique avant de passer à la suite
+                storyHistory.push(currentStoryIndex);
+                
+                // Créer des confettis pour célébrer
+                createConfetti(30);
+                
+                setTimeout(() => {
+                    document.getElementById("narrator-face").src = "calmeMM.jpg";
+                    document.getElementById("buttons").style.display = "none";
+                    document.getElementById("narrator-container").classList.remove("narrator-large");
+                    currentStoryIndex++;
+                    updateNavButtons();
+                    updateProgressBar();
+                    displayStory();
+                }, 2000);
+            } else {
+                // Mauvaise réponse
+                button.classList.add("shake");
+                setTimeout(() => {
+                    button.classList.remove("shake");
+                }, 500);
+            }
+        }
+
+        function updateNavButtons() {
+            document.getElementById("prev-btn").disabled = currentStoryIndex === 0;
+            document.getElementById("next-btn").disabled = currentStoryIndex === storyText.length - 1;
+        }
+
+        function updateProgressBar() {
+            const progressPercentage = (currentStoryIndex / (storyText.length - 1)) * 100;
+            document.getElementById("progress-bar").style.width = progressPercentage + "%";
+        }
+
+        function goHome() {
+            document.getElementById("story-card").style.display = "none";
+            document.getElementById("start-button").style.display = "block";
+            document.getElementById("start-button").textContent = "Commencer l'histoire";
+            document.getElementById("nav-buttons").style.display = "none";
+            document.getElementById("progress-container").style.display = "none";
+            currentStoryIndex = 0;
+            storyHistory = [];
+            
+            // Arrêter l'audio si en cours
+            audioElement.pause();
+            clearInterval(mouthInterval);
+            document.getElementById("narrator-mouth").style.display = "none";
+            document.getElementById("narrator-container").classList.remove("narrator-large");
+            document.getElementById("narrator-face").src = "calmeMM.jpg";
+        }
+
+        function showEmotionAnimation(emotion) {
+            const anim = document.getElementById(emotion + '-animation');
+            anim.classList.add('show');
+            setTimeout(() => {
+                anim.classList.remove('show');
+            }, 1500);
+        }
+
+        function showMood(mood) {
+            // Cache tous les nuages d'humeur
+            document.querySelectorAll('.mood-cloud').forEach(cloud => {
+                cloud.style.opacity = '0';
+            });
+            
+            // Affiche le nuage correspondant
+            document.querySelector('.' + mood + '-cloud').style.opacity = '1';
+            
+            // Cache le nuage après 3 secondes
+            setTimeout(() => {
+                document.querySelector('.' + mood + '-cloud').style.opacity = '0';
+            }, 3000);
+        }
+
+        function createDecorativeEmojis() {
+            const container = document.getElementById("decorative-emojis");
+            const emojis = ["🌈", "☁️", "🌤️", "🌞", "🦋", "🌸", "🌼", "✨", "💫", "🌟", "🌺", "🌻"];
+            
+            for (let i = 0; i < 25; i++) {
+                const emoji = document.createElement("div");
+                emoji.className = "emoji wave-emoji";
+                emoji.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+                emoji.style.left = Math.random() * 100 + "%";
+                emoji.style.top = Math.random() * 100 + "%";
+                emoji.style.animationDelay = (Math.random() * 2) + "s";
+                emoji.style.fontSize = (Math.random() * 20 + 20) + "px";
+                container.appendChild(emoji);
+            }
+        }
+
+        function createParticles() {
+            const particlesContainer = document.getElementById("particles");
+            particlesContainer.innerHTML = '';
+            
+            const colors = ['#E1F5FE', '#B3E5FC', '#81D4FA', '#4FC3F7', '#29B6F6', '#03A9F4'];
+            
+            for (let i = 0; i < 30; i++) {
+                const particle = document.createElement("div");
+                particle.className = "particle";
+                particle.style.left = Math.random() * 100 + "%";
+                particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                particle.style.width = (Math.random() * 8 + 3) + "px";
+                particle.style.height = particle.style.width;
+                particle.style.opacity = Math.random() * 0.5 + 0.3;
+                particle.style.animationDuration = (Math.random() * 10 + 5) + "s";
+                particle.style.animationDelay = (Math.random() * 5) + "s";
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        function createFlowers() {
+            const flowerColors = ['#FF4081', '#F50057', '#FF80AB', '#EC407A', '#E91E63', '#D81B60', '#C2185B', '#AD1457', '#FFEB3B', '#FFC107', '#FF9800', '#FF5722'];
+            
+            for (let i = 0; i < 15; i++) {
+                const flower = document.createElement('div');
+                flower.className = 'flower';
+                flower.style.left = (Math.random() * 90 + 5) + '%';
+                
+                const stem = document.createElement('div');
+                stem.className = 'flower-stem';
+                
+                const head = document.createElement('div');
+                head.className = 'flower-head';
+                head.style.backgroundColor = flowerColors[Math.floor(Math.random() * flowerColors.length)];
+                
+                flower.appendChild(stem);
+                flower.appendChild(head);
+                document.body.appendChild(flower);
+            }
+        }
+
+        function createButterflies() {
+            const butterflyColors = ['#FF4081', '#F50057', '#FF80AB', '#EC407A', '#E91E63', '#D81B60', '#C2185B', '#AD1457', '#FFEB3B', '#FFC107', '#FF9800', '#FF5722'];
+            
+            for (let i = 0; i < 5; i++) {
+                const butterfly = document.createElement('div');
+                butterfly.className = 'butterfly';
+                butterfly.textContent = '🦋';
+                butterfly.style.left = (Math.random() * 80 + 10) + '%';
+                butterfly.style.top = (Math.random() * 60 + 20) + '%';
+                butterfly.style.animationDelay = (Math.random() * 5) + 's';
+                document.body.appendChild(butterfly);
+            }
+        }
+
+        function createBirds() {
+            for (let i = 0; i < 3; i++) {
+                const bird = document.createElement('div');
+                bird.className = 'bird';
+                bird.textContent = '🐦';
+                bird.style.top = (Math.random() * 30 + 10) + '%';
+                bird.style.animationDelay = (Math.random() * 5) + 's';
+                document.body.appendChild(bird);
+            }
+        }
+
+        function createConfetti(count) {
+            const colors = ['#E1F5FE', '#B3E5FC', '#81D4FA', '#4FC3F7', '#29B6F6', '#03A9F4', '#FF4081', '#F50057', '#FF80AB', '#FFEB3B', '#FFC107', '#FF9800'];
+            
+            for (let i = 0; i < count; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.top = '-20px';
+                confetti.style.animation = 'confetti-fall ' + (Math.random() * 2 + 1) + 's linear forwards';
+                confetti.style.animationDelay = i * 0.1 + 's';
+                document.body.appendChild(confetti);
+                
+                setTimeout(() => confetti.remove(), 2000 + i * 100);
+            }
+        }
+
+        // Ajouter des animations périodiques pour plus de vivacité
+        setInterval(() => {
+            if (Math.random() > 0.8) {
+                createParticles();
+            }
+            
+            if (Math.random() > 0.9) {
+                createButterflies();
+            }
+        }, 5000);
+    </script>
+</body>
+</html>
