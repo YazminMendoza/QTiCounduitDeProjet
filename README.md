@@ -1,9 +1,9 @@
-Apprends les Émotions avec QT ! 🧠💖
+Apprends les Émotions avec QT ! 
 Bienvenue sur le dépôt GitHub de notre projet, une application interactive conçue pour aider les enfants de 3 à 4 ans à reconnaître les émotions à travers une histoire animée.
 
 Ce guide vous expliquera pas à pas comment accéder à notre projet, l’ouvrir et l’utiliser, même si vous n’avez jamais utilisé GitHub ni manipulé ce type de fichier auparavant.
 
-📥 Étapes détaillées pour installer le projet
+Étapes détaillées pour installer le projet
 1. Accéder à la page du projet sur GitHub
 Cliquez (ou copiez-collez dans votre navigateur) sur le lien GitHub que l’on vous a fourni pour accéder au projet.
 
@@ -38,7 +38,7 @@ Le fichier va s’ouvrir automatiquement dans votre navigateur Internet (par exe
 
 Si rien ne se passe, clic droit sur le fichier puis choisissez “Ouvrir avec” → votre navigateur Internet.
 
-🕹️ Utiliser l'application étape par étape
+Utiliser l'application étape par étape
 Une fois le fichier ouvert dans votre navigateur, vous verrez une interface simple et colorée adaptée aux enfants.
 
 1. Commencer l’histoire
@@ -64,23 +64,21 @@ Vous avez aussi la possibilité de :
 
 Cliquer sur un bouton "Retour" pour revenir à la scène précédente,
 
-Cliquer sur un bouton "Suivant" pour avancer dans l’histoire (si vous avez bien répondu),
+Cliquer sur un bouton "Suivant" pour avancer dans l’histoire,
 
-🆕 Fonctionnalités supplémentaires
+Fonctionnalités supplémentaires
 Nous avons ajouté plusieurs fonctionnalités pratiques pour rendre l’application encore plus agréable à utiliser :
 
-🌍 Changer la langue (français / anglais) : Appuyez sur le bouton en haut à droite (drapeau) pour basculer entre les deux langues.
+Changer la langue (français / anglais) : Appuyez sur le bouton en haut à droite (drapeau) pour basculer entre les deux langues.
 
-🏠 Retour à l’accueil : Cliquez sur le bouton “maison” en haut à droite pour revenir à la page d’accueil à tout moment.
+Retour à l’accueil : Cliquez sur le bouton “maison” en haut à droite pour revenir à la page d’accueil à tout moment.
 
-🔇 Couper le son : Appuyez sur le bouton avec le symbole son 🔊 en bas à gauche pour activer ou désactiver le son.
+Couper le son : Appuyez sur le bouton avec le symbole son 🔊 en bas à gauche pour activer ou désactiver le son.
 
-🌞🌙 Mode jour / nuit : En bas à gauche, cliquez sur le bouton avec le soleil (mode jour) ou la lune (mode nuit) pour changer l’ambiance visuelle de l'application.
+Mode jour / nuit : En bas à gauche, cliquez sur le bouton avec le soleil (mode jour) ou la lune (mode nuit) pour changer l’ambiance visuelle de l'application.
 
-✅ Conseils
+Conseils
 Il n’est pas nécessaire d’installer de logiciel : tout se fait dans votre navigateur.
-
 Assurez-vous simplement d’avoir un navigateur Internet à jour (Google Chrome est recommandé pour de meilleures performances).
-
 Si quelque chose ne fonctionne pas, essayez d’actualiser la page (appuyez sur la touche F5 du clavier ou cliquez sur l’icône 🔄 dans votre navigateur).
 
